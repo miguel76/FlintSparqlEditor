@@ -1,2 +1,5 @@
 *.svn
 *.db
+.buildpath
+.project
+.settings
