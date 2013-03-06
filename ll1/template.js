@@ -231,7 +231,7 @@ CodeMirror.defineMode("%%%modename%%%", function(config, parserConfig) {
 			// better consume something anyway, or else we're stuck
 			consumed= stream.match(/^.[A-Za-z0-9]*/,true,false);
 			return { cat:"<invalid_token>",
-							 style: "sp-invalid",
+							 style: "sp-error",
 							 text: consumed[0]
 						 };
 		}
@@ -438,4 +438,4 @@ CodeMirror.defineMode("%%%modename%%%", function(config, parserConfig) {
 		electricChars: "}])"
 	};
 });
-
+CodeMirror.defineMIME("application/x-sparql-query", "sparql");
