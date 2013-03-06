@@ -23,12 +23,15 @@ stephen.cresswell@tso.co.uk
 
 :-dynamic '==>'/2.
 
+sparql11 ==> [prologue,(queryAll or updateAll), $].
 queryUnit ==> [query,$].
 updateUnit ==> [update,$].
 
 query ==> 
 	[prologue,or(selectQuery,constructQuery,describeQuery,askQuery),valuesClause].
-
+queryAll ==> 
+	[or(selectQuery,constructQuery,describeQuery,askQuery),valuesClause].
+	
 prologue ==> 
 	[?(baseDecl),*(prefixDecl)].
 
@@ -150,7 +153,7 @@ valuesClause ==> [].
 
 %[29]
 update ==> [prologue,?([update1,?([';',update])])].
-
+updateAll ==> [?([update1,?([';',update])])].
 %[30]
 update1 ==> [load].
 update1 ==> [clear].

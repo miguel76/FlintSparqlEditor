@@ -1,3 +1,10 @@
+CodeMirror.defineMode("sparql11", function(config, parserConfig) {
+
+	var indentUnit = config.indentUnit;
+
+	// ll1_table is auto-generated from grammar
+	// - do not edit manually
+	// %%%table%%%
 var ll1_table=
 {
   "*[&&,valueLogical]" : {
@@ -202,6 +209,21 @@ var ll1_table=
      "DOUBLE_NEGATIVE": ["dataBlockValue","*dataBlockValue"], 
      "}": [], 
      ")": []}, 
+  "*datasetClause" : {
+     "FROM": ["datasetClause","*datasetClause"], 
+     "WHERE": [], 
+     "{": []}, 
+  "*describeDatasetClause" : {
+     "FROM": ["describeDatasetClause","*describeDatasetClause"], 
+     "ORDER": [], 
+     "HAVING": [], 
+     "GROUP": [], 
+     "LIMIT": [], 
+     "OFFSET": [], 
+     "WHERE": [], 
+     "{": [], 
+     "VALUES": [], 
+     "$": []}, 
   "*graphNode" : {
      "(": ["graphNode","*graphNode"], 
      "[": ["graphNode","*graphNode"], 
@@ -322,6 +344,7 @@ var ll1_table=
      "OFFSET": [], 
      "ORDER": [], 
      "HAVING": [], 
+     "$": [], 
      "}": []}, 
   "*havingCondition" : {
      "(": ["havingCondition","*havingCondition"], 
@@ -386,6 +409,7 @@ var ll1_table=
      "LIMIT": [], 
      "OFFSET": [], 
      "ORDER": [], 
+     "$": [], 
      "}": []}, 
   "*or([[ (,*dataBlockValue,)],NIL])" : {
      "(": ["or([[ (,*dataBlockValue,)],NIL])","*or([[ (,*dataBlockValue,)],NIL])"], 
@@ -444,7 +468,8 @@ var ll1_table=
      "VAR1": ["or([var,[ (,expression,AS,var,)]])","*or([var,[ (,expression,AS,var,)]])"], 
      "VAR2": ["or([var,[ (,expression,AS,var,)]])","*or([var,[ (,expression,AS,var,)]])"], 
      "WHERE": [], 
-     "{": []}, 
+     "{": [], 
+     "FROM": []}, 
   "*orderCondition" : {
      "ASC": ["orderCondition","*orderCondition"], 
      "DESC": ["orderCondition","*orderCondition"], 
@@ -511,12 +536,17 @@ var ll1_table=
      "VALUES": [], 
      "LIMIT": [], 
      "OFFSET": [], 
+     "$": [], 
      "}": []}, 
   "*prefixDecl" : {
      "PREFIX": ["prefixDecl","*prefixDecl"], 
      "$": [], 
+     "CONSTRUCT": [], 
+     "DESCRIBE": [], 
+     "ASK": [], 
      "INSERT": [], 
      "DELETE": [], 
+     "SELECT": [], 
      "LOAD": [], 
      "CLEAR": [], 
      "DROP": [], 
@@ -532,6 +562,22 @@ var ll1_table=
      "VAR1": ["var","*var"], 
      "VAR2": ["var","*var"], 
      ")": []}, 
+  "*varOrIRIref" : {
+     "VAR1": ["varOrIRIref","*varOrIRIref"], 
+     "VAR2": ["varOrIRIref","*varOrIRIref"], 
+     "IRI_REF": ["varOrIRIref","*varOrIRIref"], 
+     "PNAME_LN": ["varOrIRIref","*varOrIRIref"], 
+     "PNAME_NS": ["varOrIRIref","*varOrIRIref"], 
+     "ORDER": [], 
+     "HAVING": [], 
+     "GROUP": [], 
+     "LIMIT": [], 
+     "OFFSET": [], 
+     "WHERE": [], 
+     "{": [], 
+     "FROM": [], 
+     "VALUES": [], 
+     "$": []}, 
   "+graphNode" : {
      "(": ["graphNode","*graphNode"], 
      "[": ["graphNode","*graphNode"], 
@@ -771,6 +817,12 @@ var ll1_table=
      "IRI_REF": ["orderCondition","*orderCondition"], 
      "PNAME_LN": ["orderCondition","*orderCondition"], 
      "PNAME_NS": ["orderCondition","*orderCondition"]}, 
+  "+varOrIRIref" : {
+     "VAR1": ["varOrIRIref","*varOrIRIref"], 
+     "VAR2": ["varOrIRIref","*varOrIRIref"], 
+     "IRI_REF": ["varOrIRIref","*varOrIRIref"], 
+     "PNAME_LN": ["varOrIRIref","*varOrIRIref"], 
+     "PNAME_NS": ["varOrIRIref","*varOrIRIref"]}, 
   "?." : {
      ".": ["."], 
      "VAR1": [], 
@@ -934,6 +986,9 @@ var ll1_table=
   "?[,,expression]" : {
      ",": ["[,,expression]"], 
      ")": []}, 
+  "?[.,?constructTriples]" : {
+     ".": ["[.,?constructTriples]"], 
+     "}": []}, 
   "?[.,?triplesBlock]" : {
      ".": ["[.,?triplesBlock]"], 
      "{": [], 
@@ -1051,10 +1106,13 @@ var ll1_table=
      ";": []}, 
   "?baseDecl" : {
      "BASE": ["baseDecl"], 
-     "PREFIX": [], 
      "$": [], 
+     "CONSTRUCT": [], 
+     "DESCRIBE": [], 
+     "ASK": [], 
      "INSERT": [], 
      "DELETE": [], 
+     "SELECT": [], 
      "LOAD": [], 
      "CLEAR": [], 
      "DROP": [], 
@@ -1062,7 +1120,35 @@ var ll1_table=
      "MOVE": [], 
      "COPY": [], 
      "CREATE": [], 
-     "WITH": []}, 
+     "WITH": [], 
+     "PREFIX": []}, 
+  "?constructTriples" : {
+     "VAR1": ["constructTriples"], 
+     "VAR2": ["constructTriples"], 
+     "NIL": ["constructTriples"], 
+     "(": ["constructTriples"], 
+     "[": ["constructTriples"], 
+     "IRI_REF": ["constructTriples"], 
+     "TRUE": ["constructTriples"], 
+     "FALSE": ["constructTriples"], 
+     "BLANK_NODE_LABEL": ["constructTriples"], 
+     "ANON": ["constructTriples"], 
+     "PNAME_LN": ["constructTriples"], 
+     "PNAME_NS": ["constructTriples"], 
+     "STRING_LITERAL1": ["constructTriples"], 
+     "STRING_LITERAL2": ["constructTriples"], 
+     "STRING_LITERAL_LONG1": ["constructTriples"], 
+     "STRING_LITERAL_LONG2": ["constructTriples"], 
+     "INTEGER": ["constructTriples"], 
+     "DECIMAL": ["constructTriples"], 
+     "DOUBLE": ["constructTriples"], 
+     "INTEGER_POSITIVE": ["constructTriples"], 
+     "DECIMAL_POSITIVE": ["constructTriples"], 
+     "DOUBLE_POSITIVE": ["constructTriples"], 
+     "INTEGER_NEGATIVE": ["constructTriples"], 
+     "DECIMAL_NEGATIVE": ["constructTriples"], 
+     "DOUBLE_NEGATIVE": ["constructTriples"], 
+     "}": []}, 
   "?groupClause" : {
      "GROUP": ["groupClause"], 
      "VALUES": [], 
@@ -1070,6 +1156,7 @@ var ll1_table=
      "OFFSET": [], 
      "ORDER": [], 
      "HAVING": [], 
+     "$": [], 
      "}": []}, 
   "?havingClause" : {
      "HAVING": ["havingClause"], 
@@ -1077,6 +1164,7 @@ var ll1_table=
      "LIMIT": [], 
      "OFFSET": [], 
      "ORDER": [], 
+     "$": [], 
      "}": []}, 
   "?insertClause" : {
      "INSERT": ["insertClause"], 
@@ -1085,15 +1173,18 @@ var ll1_table=
   "?limitClause" : {
      "LIMIT": ["limitClause"], 
      "VALUES": [], 
+     "$": [], 
      "}": []}, 
   "?limitOffsetClauses" : {
      "LIMIT": ["limitOffsetClauses"], 
      "OFFSET": ["limitOffsetClauses"], 
      "VALUES": [], 
+     "$": [], 
      "}": []}, 
   "?offsetClause" : {
      "OFFSET": ["offsetClause"], 
      "VALUES": [], 
+     "$": [], 
      "}": []}, 
   "?or([DISTINCT,REDUCED])" : {
      "DISTINCT": ["or([DISTINCT,REDUCED])"], 
@@ -1208,6 +1299,7 @@ var ll1_table=
      "VALUES": [], 
      "LIMIT": [], 
      "OFFSET": [], 
+     "$": [], 
      "}": []}, 
   "?pathMod" : {
      "*": ["pathMod"], 
@@ -1305,6 +1397,16 @@ var ll1_table=
      "DOUBLE_NEGATIVE": ["triplesTemplate"], 
      "}": [], 
      "GRAPH": []}, 
+  "?whereClause" : {
+     "WHERE": ["whereClause"], 
+     "{": ["whereClause"], 
+     "ORDER": [], 
+     "HAVING": [], 
+     "GROUP": [], 
+     "LIMIT": [], 
+     "OFFSET": [], 
+     "VALUES": [], 
+     "$": []}, 
   "[ (,*dataBlockValue,)]" : {
      "(": ["(","*dataBlockValue",")"]}, 
   "[ (,*var,)]" : {
@@ -1319,6 +1421,9 @@ var ll1_table=
      "&&": ["&&","valueLogical"]}, 
   "[*,unaryExpression]" : {
      "*": ["*","unaryExpression"]}, 
+  "[*datasetClause,WHERE,{,?triplesTemplate,},solutionModifier]" : {
+     "WHERE": ["*datasetClause","WHERE","{","?triplesTemplate","}","solutionModifier"], 
+     "FROM": ["*datasetClause","WHERE","{","?triplesTemplate","}","solutionModifier"]}, 
   "[+,multiplicativeExpression]" : {
      "+": ["+","multiplicativeExpression"]}, 
   "[,,expression]" : {
@@ -1333,6 +1438,8 @@ var ll1_table=
      ",": [",","or([},[integer,}]])"]}, 
   "[-,multiplicativeExpression]" : {
      "-": ["-","multiplicativeExpression"]}, 
+  "[.,?constructTriples]" : {
+     ".": [".","?constructTriples"]}, 
   "[.,?triplesBlock]" : {
      ".": [".","?triplesBlock"]}, 
   "[.,?triplesTemplate]" : {
@@ -1373,6 +1480,8 @@ var ll1_table=
      "UNION": ["UNION","groupGraphPattern"]}, 
   "[^^,iriRef]" : {
      "^^": ["^^","iriRef"]}, 
+  "[constructTemplate,*datasetClause,whereClause,solutionModifier]" : {
+     "{": ["constructTemplate","*datasetClause","whereClause","solutionModifier"]}, 
   "[deleteClause,?insertClause]" : {
      "DELETE": ["deleteClause","?insertClause"]}, 
   "[graphPatternNotTriples,?.,?triplesBlock]" : {
@@ -1540,6 +1649,8 @@ var ll1_table=
   "argList" : {
      "NIL": ["NIL"], 
      "(": ["(","?DISTINCT","expression","*[,,expression]",")"]}, 
+  "askQuery" : {
+     "ASK": ["ASK","*datasetClause","whereClause","solutionModifier"]}, 
   "baseDecl" : {
      "BASE": ["BASE","IRI_REF"]}, 
   "bind" : {
@@ -1848,6 +1959,36 @@ var ll1_table=
      "IRI_REF": ["functionCall"], 
      "PNAME_LN": ["functionCall"], 
      "PNAME_NS": ["functionCall"]}, 
+  "constructQuery" : {
+     "CONSTRUCT": ["CONSTRUCT","or([[constructTemplate,*datasetClause,whereClause,solutionModifier],[*datasetClause,WHERE,{,?triplesTemplate,},solutionModifier]])"]}, 
+  "constructTemplate" : {
+     "{": ["{","?constructTriples","}"]}, 
+  "constructTriples" : {
+     "VAR1": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "VAR2": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "NIL": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "(": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "[": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "IRI_REF": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "TRUE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "FALSE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "BLANK_NODE_LABEL": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "ANON": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "PNAME_LN": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "PNAME_NS": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "STRING_LITERAL1": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "STRING_LITERAL2": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "STRING_LITERAL_LONG1": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "STRING_LITERAL_LONG2": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "INTEGER": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DECIMAL": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DOUBLE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "INTEGER_POSITIVE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DECIMAL_POSITIVE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DOUBLE_POSITIVE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "INTEGER_NEGATIVE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DECIMAL_NEGATIVE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DOUBLE_NEGATIVE": ["triplesSameSubject","?[.,?constructTriples]"]}, 
   "copy" : {
      "COPY": ["COPY","?SILENT_4","graphOrDefault","TO","graphOrDefault"]}, 
   "create" : {
@@ -1877,12 +2018,22 @@ var ll1_table=
      "TRUE": ["booleanLiteral"], 
      "FALSE": ["booleanLiteral"], 
      "UNDEF": ["UNDEF"]}, 
+  "datasetClause" : {
+     "FROM": ["FROM","or([defaultGraphClause,namedGraphClause])"]}, 
+  "defaultGraphClause" : {
+     "IRI_REF": ["sourceSelector"], 
+     "PNAME_LN": ["sourceSelector"], 
+     "PNAME_NS": ["sourceSelector"]}, 
   "delete1" : {
      "DATA": ["DATA","quadDataNoBnodes"], 
      "WHERE": ["WHERE","quadPatternNoBnodes"], 
      "{": ["quadPatternNoBnodes","?insertClause","*usingClause","WHERE","groupGraphPattern"]}, 
   "deleteClause" : {
      "DELETE": ["DELETE","quadPattern"]}, 
+  "describeDatasetClause" : {
+     "FROM": ["FROM","or([defaultGraphClause,namedGraphClause])"]}, 
+  "describeQuery" : {
+     "DESCRIBE": ["DESCRIBE","or([+varOrIRIref,*])","*describeDatasetClause","?whereClause","solutionModifier"]}, 
   "disallowBnodes" : {
      "}": [], 
      "GRAPH": [], 
@@ -2421,6 +2572,8 @@ var ll1_table=
      "DOUBLE_NEGATIVE": ["unaryExpression","*or([[*,unaryExpression],[/,unaryExpression]])"], 
      "PNAME_LN": ["unaryExpression","*or([[*,unaryExpression],[/,unaryExpression]])"], 
      "PNAME_NS": ["unaryExpression","*or([[*,unaryExpression],[/,unaryExpression]])"]}, 
+  "namedGraphClause" : {
+     "NAMED": ["NAMED","sourceSelector"]}, 
   "notExistsFunc" : {
      "NOT": ["NOT","EXISTS","groupGraphPattern"]}, 
   "numericExpression" : {
@@ -2731,6 +2884,13 @@ var ll1_table=
      "VAR1": ["+or([var,[ (,expression,AS,var,)]])"], 
      "VAR2": ["+or([var,[ (,expression,AS,var,)]])"], 
      "*": ["*"]}, 
+  "or([+varOrIRIref,*])" : {
+     "VAR1": ["+varOrIRIref"], 
+     "VAR2": ["+varOrIRIref"], 
+     "IRI_REF": ["+varOrIRIref"], 
+     "PNAME_LN": ["+varOrIRIref"], 
+     "PNAME_NS": ["+varOrIRIref"], 
+     "*": ["*"]}, 
   "or([ASC,DESC])" : {
      "ASC": ["ASC"], 
      "DESC": ["DESC"]}, 
@@ -2773,12 +2933,21 @@ var ll1_table=
      ">=": ["[>=,numericExpression]"], 
      "IN": ["[IN,expressionList]"], 
      "NOT": ["[NOT,IN,expressionList]"]}, 
+  "or([[constructTemplate,*datasetClause,whereClause,solutionModifier],[*datasetClause,WHERE,{,?triplesTemplate,},solutionModifier]])" : {
+     "{": ["[constructTemplate,*datasetClause,whereClause,solutionModifier]"], 
+     "WHERE": ["[*datasetClause,WHERE,{,?triplesTemplate,},solutionModifier]"], 
+     "FROM": ["[*datasetClause,WHERE,{,?triplesTemplate,},solutionModifier]"]}, 
   "or([[deleteClause,?insertClause],insertClause])" : {
      "DELETE": ["[deleteClause,?insertClause]"], 
      "INSERT": ["insertClause"]}, 
   "or([[integer,or([[,,or([},[integer,}]])],}])],[,,integer,}]])" : {
      "INTEGER": ["[integer,or([[,,or([},[integer,}]])],}])]"], 
      ",": ["[,,integer,}]"]}, 
+  "or([defaultGraphClause,namedGraphClause])" : {
+     "IRI_REF": ["defaultGraphClause"], 
+     "PNAME_LN": ["defaultGraphClause"], 
+     "PNAME_NS": ["defaultGraphClause"], 
+     "NAMED": ["namedGraphClause"]}, 
   "or([inlineDataOneVar,inlineDataFull])" : {
      "VAR1": ["inlineDataOneVar"], 
      "VAR2": ["inlineDataOneVar"], 
@@ -2801,6 +2970,27 @@ var ll1_table=
      "INTEGER_NEGATIVE": ["numericLiteralNegative"], 
      "DECIMAL_NEGATIVE": ["numericLiteralNegative"], 
      "DOUBLE_NEGATIVE": ["numericLiteralNegative"]}, 
+  "or([queryAll,updateAll])" : {
+     "CONSTRUCT": ["queryAll"], 
+     "DESCRIBE": ["queryAll"], 
+     "ASK": ["queryAll"], 
+     "SELECT": ["queryAll"], 
+     "INSERT": ["updateAll"], 
+     "DELETE": ["updateAll"], 
+     "LOAD": ["updateAll"], 
+     "CLEAR": ["updateAll"], 
+     "DROP": ["updateAll"], 
+     "ADD": ["updateAll"], 
+     "MOVE": ["updateAll"], 
+     "COPY": ["updateAll"], 
+     "CREATE": ["updateAll"], 
+     "WITH": ["updateAll"], 
+     "$": ["updateAll"]}, 
+  "or([selectQuery,constructQuery,describeQuery,askQuery])" : {
+     "SELECT": ["selectQuery"], 
+     "CONSTRUCT": ["constructQuery"], 
+     "DESCRIBE": ["describeQuery"], 
+     "ASK": ["askQuery"]}, 
   "or([subSelect,groupGraphPatternSub])" : {
      "SELECT": ["subSelect"], 
      "{": ["groupGraphPatternSub"], 
@@ -3075,8 +3265,12 @@ var ll1_table=
      "PREFIX": ["?baseDecl","*prefixDecl"], 
      "BASE": ["?baseDecl","*prefixDecl"], 
      "$": ["?baseDecl","*prefixDecl"], 
+     "CONSTRUCT": ["?baseDecl","*prefixDecl"], 
+     "DESCRIBE": ["?baseDecl","*prefixDecl"], 
+     "ASK": ["?baseDecl","*prefixDecl"], 
      "INSERT": ["?baseDecl","*prefixDecl"], 
      "DELETE": ["?baseDecl","*prefixDecl"], 
+     "SELECT": ["?baseDecl","*prefixDecl"], 
      "LOAD": ["?baseDecl","*prefixDecl"], 
      "CLEAR": ["?baseDecl","*prefixDecl"], 
      "DROP": ["?baseDecl","*prefixDecl"], 
@@ -3167,6 +3361,11 @@ var ll1_table=
      "}": ["?triplesTemplate","*[quadsNotTriples,?.,?triplesTemplate]"]}, 
   "quadsNotTriples" : {
      "GRAPH": ["GRAPH","varOrIRIref","{","?triplesTemplate","}"]}, 
+  "queryAll" : {
+     "CONSTRUCT": ["or([selectQuery,constructQuery,describeQuery,askQuery])","valuesClause"], 
+     "DESCRIBE": ["or([selectQuery,constructQuery,describeQuery,askQuery])","valuesClause"], 
+     "ASK": ["or([selectQuery,constructQuery,describeQuery,askQuery])","valuesClause"], 
+     "SELECT": ["or([selectQuery,constructQuery,describeQuery,askQuery])","valuesClause"]}, 
   "rdfLiteral" : {
      "STRING_LITERAL1": ["string","?or([LANGTAG,[^^,iriRef]])"], 
      "STRING_LITERAL2": ["string","?or([LANGTAG,[^^,iriRef]])"], 
@@ -3262,6 +3461,8 @@ var ll1_table=
      "PNAME_NS": ["numericExpression","?or([[=,numericExpression],[!=,numericExpression],[<,numericExpression],[>,numericExpression],[<=,numericExpression],[>=,numericExpression],[IN,expressionList],[NOT,IN,expressionList]])"]}, 
   "selectClause" : {
      "SELECT": ["SELECT","?or([DISTINCT,REDUCED])","or([+or([var,[ (,expression,AS,var,)]]),*])"]}, 
+  "selectQuery" : {
+     "SELECT": ["selectClause","*datasetClause","whereClause","solutionModifier"]}, 
   "serviceGraphPattern" : {
      "SERVICE": ["SERVICE","?SILENT","varOrIRIref","groupGraphPattern"]}, 
   "solutionModifier" : {
@@ -3271,7 +3472,30 @@ var ll1_table=
      "HAVING": ["?groupClause","?havingClause","?orderClause","?limitOffsetClauses"], 
      "GROUP": ["?groupClause","?havingClause","?orderClause","?limitOffsetClauses"], 
      "VALUES": ["?groupClause","?havingClause","?orderClause","?limitOffsetClauses"], 
+     "$": ["?groupClause","?havingClause","?orderClause","?limitOffsetClauses"], 
      "}": ["?groupClause","?havingClause","?orderClause","?limitOffsetClauses"]}, 
+  "sourceSelector" : {
+     "IRI_REF": ["iriRef"], 
+     "PNAME_LN": ["iriRef"], 
+     "PNAME_NS": ["iriRef"]}, 
+  "sparql11" : {
+     "$": ["prologue","or([queryAll,updateAll])","$"], 
+     "CONSTRUCT": ["prologue","or([queryAll,updateAll])","$"], 
+     "DESCRIBE": ["prologue","or([queryAll,updateAll])","$"], 
+     "ASK": ["prologue","or([queryAll,updateAll])","$"], 
+     "INSERT": ["prologue","or([queryAll,updateAll])","$"], 
+     "DELETE": ["prologue","or([queryAll,updateAll])","$"], 
+     "SELECT": ["prologue","or([queryAll,updateAll])","$"], 
+     "LOAD": ["prologue","or([queryAll,updateAll])","$"], 
+     "CLEAR": ["prologue","or([queryAll,updateAll])","$"], 
+     "DROP": ["prologue","or([queryAll,updateAll])","$"], 
+     "ADD": ["prologue","or([queryAll,updateAll])","$"], 
+     "MOVE": ["prologue","or([queryAll,updateAll])","$"], 
+     "COPY": ["prologue","or([queryAll,updateAll])","$"], 
+     "CREATE": ["prologue","or([queryAll,updateAll])","$"], 
+     "WITH": ["prologue","or([queryAll,updateAll])","$"], 
+     "PREFIX": ["prologue","or([queryAll,updateAll])","$"], 
+     "BASE": ["prologue","or([queryAll,updateAll])","$"]}, 
   "storeProperty" : {
      "VAR1": [], 
      "VAR2": [], 
@@ -3511,20 +3735,18 @@ var ll1_table=
      "INSERT": ["INSERT","insert1"], 
      "DELETE": ["DELETE","delete1"], 
      "WITH": ["modify"]}, 
-  "updateUnit" : {
-     "$": ["update","$"], 
-     "INSERT": ["update","$"], 
-     "DELETE": ["update","$"], 
-     "PREFIX": ["update","$"], 
-     "BASE": ["update","$"], 
-     "LOAD": ["update","$"], 
-     "CLEAR": ["update","$"], 
-     "DROP": ["update","$"], 
-     "ADD": ["update","$"], 
-     "MOVE": ["update","$"], 
-     "COPY": ["update","$"], 
-     "CREATE": ["update","$"], 
-     "WITH": ["update","$"]}, 
+  "updateAll" : {
+     "INSERT": ["?[update1,?[;,update]]"], 
+     "DELETE": ["?[update1,?[;,update]]"], 
+     "LOAD": ["?[update1,?[;,update]]"], 
+     "CLEAR": ["?[update1,?[;,update]]"], 
+     "DROP": ["?[update1,?[;,update]]"], 
+     "ADD": ["?[update1,?[;,update]]"], 
+     "MOVE": ["?[update1,?[;,update]]"], 
+     "COPY": ["?[update1,?[;,update]]"], 
+     "CREATE": ["?[update1,?[;,update]]"], 
+     "WITH": ["?[update1,?[;,update]]"], 
+     "$": ["?[update1,?[;,update]]"]}, 
   "usingClause" : {
      "USING": ["USING","or([iriRef,[NAMED,iriRef]])"]}, 
   "valueLogical" : {
@@ -3615,6 +3837,7 @@ var ll1_table=
      "PNAME_NS": ["relationalExpression"]}, 
   "valuesClause" : {
      "VALUES": ["VALUES","dataBlock"], 
+     "$": [], 
      "}": []}, 
   "var" : {
      "VAR1": ["VAR1"], 
@@ -3676,7 +3899,441 @@ var keywords=/^(GROUP_CONCAT|DATATYPE|BASE|PREFIX|SELECT|CONSTRUCT|DESCRIBE|ASK|
 
 var punct=/^(\*|a|\.|\{|\}|,|\(|\)|;|\[|\]|\|\||&&|=|!=|!|<=|>=|<|>|\+|-|\/|\^\^|\?|\||\^)/ ;
 
-var defaultQueryType="update";
+var defaultQueryType=null;
 var lexVersion="sparql11";
-var startSymbol="update";
+var startSymbol="sparql11";
 var acceptEmpty=true;
+
+	function getTerminals()
+	{
+		var IRI_REF = '<[^<>\"\'\|\{\}\^\\\x00-\x20]*>';
+		/*
+		 * PN_CHARS_BASE =
+		 * '[A-Z]|[a-z]|[\\u00C0-\\u00D6]|[\\u00D8-\\u00F6]|[\\u00F8-\\u02FF]|[\\u0370-\\u037D]|[\\u037F-\\u1FFF]|[\\u200C-\\u200D]|[\\u2070-\\u218F]|[\\u2C00-\\u2FEF]|[\\u3001-\\uD7FF]|[\\uF900-\\uFDCF]|[\\uFDF0-\\uFFFD]|[\\u10000-\\uEFFFF]';
+		 */
+
+		var PN_CHARS_BASE =
+			'[A-Za-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD]';
+		var PN_CHARS_U = PN_CHARS_BASE+'|_';
+
+		var PN_CHARS= '('+PN_CHARS_U+'|-|[0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040])';
+		var VARNAME = '('+PN_CHARS_U+'|[0-9])'+
+			'('+PN_CHARS_U+'|[0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040])*';
+		var VAR1 = '\\?'+VARNAME;
+		var VAR2 = '\\$'+VARNAME;
+
+		var PN_PREFIX= '('+PN_CHARS_BASE+')((('+PN_CHARS+')|\\.)*('+PN_CHARS+'))?';
+
+		var HEX= '[0-9A-Fa-f]';
+		var PERCENT='(%'+HEX+HEX+')';
+		var PN_LOCAL_ESC='(\\\\[_~\\.\\-!\\$&\'\\(\\)\\*\\+,;=/\\?#@%])';
+		var PLX= '('+PERCENT+'|'+PN_LOCAL_ESC+')';
+		var PN_LOCAL;
+		var BLANK_NODE_LABEL;
+		if (lexVersion=="sparql11") {
+			PN_LOCAL= '('+PN_CHARS_U+'|:|[0-9]|'+PLX+')(('+PN_CHARS+'|\\.|:|'+PLX+')*('+PN_CHARS+'|:|'+PLX+'))?';
+			BLANK_NODE_LABEL = '_:('+PN_CHARS_U+'|[0-9])(('+PN_CHARS+'|\\.)*'+PN_CHARS+')?';
+		} else {
+			PN_LOCAL= '('+PN_CHARS_U+'|[0-9])((('+PN_CHARS+')|\\.)*('+PN_CHARS+'))?';
+			BLANK_NODE_LABEL = '_:'+PN_LOCAL;
+		}
+		var PNAME_NS = '('+PN_PREFIX+')?:';
+		var PNAME_LN = PNAME_NS+PN_LOCAL;
+		var LANGTAG = '@[a-zA-Z]+(-[a-zA-Z0-9]+)*';
+
+		var EXPONENT = '[eE][\\+-]?[0-9]+';
+		var INTEGER = '[0-9]+';
+		var DECIMAL = '(([0-9]+\\.[0-9]*)|(\\.[0-9]+))';
+		var DOUBLE =
+			'(([0-9]+\\.[0-9]*'+EXPONENT+')|'+
+			'(\\.[0-9]+'+EXPONENT+')|'+
+			'([0-9]+'+EXPONENT+'))';
+
+		var INTEGER_POSITIVE = '\\+' + INTEGER;
+		var DECIMAL_POSITIVE = '\\+' + DECIMAL;
+		var DOUBLE_POSITIVE  = '\\+' + DOUBLE;
+		var INTEGER_NEGATIVE = '-' + INTEGER;
+		var DECIMAL_NEGATIVE = '-' + DECIMAL;
+		var DOUBLE_NEGATIVE  = '-' + DOUBLE;
+
+		// var ECHAR = '\\\\[tbnrf\\"\\\']';
+		var ECHAR = '\\\\[tbnrf\\\\"\']';
+
+		var STRING_LITERAL1 = "'(([^\\x27\\x5C\\x0A\\x0D])|"+ECHAR+")*'";
+		var STRING_LITERAL2 = '"(([^\\x22\\x5C\\x0A\\x0D])|'+ECHAR+')*"';
+
+		var STRING_LITERAL_LONG1 = "'''(('|'')?([^'\\\\]|"+ECHAR+"))*'''";
+		var STRING_LITERAL_LONG2 = '"""(("|"")?([^"\\\\]|'+ECHAR+'))*"""';
+
+		var WS    =        '[\\x20\\x09\\x0D\\x0A]';
+		// Careful! Code mirror feeds one line at a time with no \n
+		// ... but otherwise comment is terminated by \n
+		var COMMENT = '#([^\\n\\r]*[\\n\\r]|[^\\n\\r]*$)';
+		var WS_OR_COMMENT_STAR = '('+WS+'|('+COMMENT+'))*';
+		var NIL   = '\\('+WS_OR_COMMENT_STAR+'\\)';
+		var ANON  = '\\['+WS_OR_COMMENT_STAR+'\\]';
+
+		var terminals=
+			{
+				terminal: [
+
+					{ name: "WS",
+						regex:new RegExp("^"+WS+"+"),
+						style:"sp-ws" },
+
+					{ name: "COMMENT",
+						regex:new RegExp("^"+COMMENT),
+						style:"sp-comment" },
+
+					{ name: "IRI_REF",
+						regex:new RegExp("^"+IRI_REF),
+						style:"sp-uri" },
+
+					{ name: "VAR1",
+						regex:new RegExp("^"+VAR1),
+						style:"sp-var"},
+
+					{ name: "VAR2",
+						regex:new RegExp("^"+VAR2),
+						style:"sp-var"},
+
+					{ name: "LANGTAG",
+						regex:new RegExp("^"+LANGTAG),
+						style:"sp-punc"},
+
+					{ name: "DOUBLE",
+						regex:new RegExp("^"+DOUBLE),
+						style:"sp-number" },
+
+					{ name: "DECIMAL",
+						regex:new RegExp("^"+DECIMAL),
+						style:"sp-number" },
+
+					{ name: "INTEGER",
+						regex:new RegExp("^"+INTEGER),
+						style:"sp-number" },
+
+					{ name: "DOUBLE_POSITIVE",
+						regex:new RegExp("^"+DOUBLE_POSITIVE),
+						style:"sp-number" },
+
+					{ name: "DECIMAL_POSITIVE",
+						regex:new RegExp("^"+DECIMAL_POSITIVE),
+						style:"sp-number" },
+
+					{ name: "INTEGER_POSITIVE",
+						regex:new RegExp("^"+INTEGER_POSITIVE),
+						style:"sp-number" },
+
+					{ name: "DOUBLE_NEGATIVE",
+						regex:new RegExp("^"+DOUBLE_NEGATIVE),
+						style:"sp-number" },
+
+					{ name: "DECIMAL_NEGATIVE",
+						regex:new RegExp("^"+DECIMAL_NEGATIVE),
+						style:"sp-number" },
+
+					{ name: "INTEGER_NEGATIVE",
+						regex:new RegExp("^"+INTEGER_NEGATIVE),
+						style:"sp-number" },
+
+					{ name: "STRING_LITERAL_LONG1",
+						regex:new RegExp("^"+STRING_LITERAL_LONG1),
+						style:"sp-literal" },
+
+					{ name: "STRING_LITERAL_LONG2",
+						regex:new RegExp("^"+STRING_LITERAL_LONG2),
+						style:"sp-literal" },
+
+					{ name: "STRING_LITERAL1",
+						regex:new RegExp("^"+STRING_LITERAL1),
+						style:"sp-literal" },
+
+					{ name: "STRING_LITERAL2",
+						regex:new RegExp("^"+STRING_LITERAL2),
+						style:"sp-literal" },
+
+					// Enclosed comments won't be highlighted
+					{ name: "NIL",
+						regex:new RegExp("^"+NIL),
+						style:"sp-punc" },
+
+					// Enclosed comments won't be highlighted
+					{ name: "ANON",
+						regex:new RegExp("^"+ANON),
+						style:"sp-punc" },
+
+					{ name: "PNAME_LN",
+						regex:new RegExp("^"+PNAME_LN),
+						style:"sp-prefixed" },
+
+					{ name: "PNAME_NS",
+						regex:new RegExp("^"+PNAME_NS),
+						style:"sp-prefixed" },
+
+					{ name: "BLANK_NODE_LABEL",
+						regex:new RegExp("^"+BLANK_NODE_LABEL),
+						style:"sp-prefixed" }
+				],
+
+			}
+		return terminals;
+	}
+
+	function getPossibles(symbol)
+	{
+		var possibles=[], possiblesOb=ll1_table[symbol];
+		if (possiblesOb!=undefined)
+			for (var property in possiblesOb)
+				possibles.push(property.toString());
+		else
+			possibles.push(symbol);
+		return possibles;
+	}
+
+	var tms= getTerminals();
+	var terminal=tms.terminal;
+
+	function tokenBase(stream, state) {
+
+		function nextToken() {
+
+			var consumed=null;
+			// Tokens defined by individual regular expressions
+			for (var i=0; i<terminal.length; ++i) {
+				consumed= stream.match(terminal[i].regex,true,false);
+				if (consumed)
+					return { cat: terminal[i].name,
+									 style: terminal[i].style,
+									 text: consumed[0]
+								 };
+			}
+
+			// Keywords
+			consumed= stream.match(keywords,true,false);
+			if (consumed)
+				return { cat: stream.current().toUpperCase(),
+								 style: "sp-keyword",
+								 text: consumed[0]
+							 };
+
+			// Punctuation
+			consumed= stream.match(punct,true,false);
+			if (consumed)
+				return { cat: stream.current(),
+								 style: "sp-punc",
+								 text: consumed[0]
+							 };
+
+			// Token is invalid
+			// better consume something anyway, or else we're stuck
+			consumed= stream.match(/^.[A-Za-z0-9]*/,true,false);
+			return { cat:"<invalid_token>",
+							 style: "sp-error",
+							 text: consumed[0]
+						 };
+		}
+
+		function recordFailurePos() {
+			// tokenOb.style= "sp-invalid";
+			var col= stream.column();
+			state.errorStartPos= col;
+			state.errorEndPos= col+tokenOb.text.length;
+		};
+
+		function setQueryType(s) {
+			if (state.queryType==null) {
+				if (s=="SELECT" || s=="CONSTRUCT" || s=="ASK" || s=="DESCRIBE")
+					state.queryType=s;
+			}
+		}
+
+		// Some fake non-terminals are just there to have side-effect on state
+		// - i.e. allow or disallow variables and bnodes in certain non-nesting
+		// contexts
+		function setSideConditions(topSymbol) {
+			if (topSymbol=="disallowVars") state.allowVars=false;
+			else if (topSymbol=="allowVars") state.allowVars=true;
+			else if (topSymbol=="disallowBnodes") state.allowBnodes=false;
+			else if (topSymbol=="allowBnodes") state.allowBnodes=true;
+			else if (topSymbol=="storeProperty") state.storeProperty=true;
+		}
+
+		function checkSideConditions(topSymbol) {
+			return(
+				(state.allowVars || topSymbol!="var") &&
+					(state.allowBnodes ||
+					 (topSymbol!="blankNode" &&
+						topSymbol!="blankNodePropertyList" &&
+						topSymbol!="blankNodePropertyListPath")))
+		}
+
+		// CodeMirror works with one line at a time,
+		// but newline should behave like whitespace
+		// - i.e. a definite break between tokens (for autocompleter)
+		if (stream.pos==0)
+			state.possibleCurrent= state.possibleNext;
+
+		var tokenOb= nextToken();
+
+
+		if (tokenOb.cat=="<invalid_token>") {
+			// set error state, and
+			if (state.OK==true) {
+				state.OK=false;
+				recordFailurePos();
+			}
+			state.complete=false;
+			// alert("Invalid:"+tokenOb.text);
+			return tokenOb.style;
+		}
+
+		if (tokenOb.cat == "WS" ||
+				tokenOb.cat == "COMMENT") {
+			state.possibleCurrent= state.possibleNext;
+			return(tokenOb.style)
+		}
+		// Otherwise, run the parser until the token is digested
+		// or failure
+		var finished= false;
+		var topSymbol;
+		var token= tokenOb.cat;
+
+		// Incremental LL1 parse
+		while(state.stack.length>0 && token && state.OK && !finished ) {
+			topSymbol= state.stack.pop();
+
+			if (!ll1_table[topSymbol]) {
+				// Top symbol is a terminal
+				if (topSymbol==token) {
+					// Matching terminals
+					// - consume token from input stream
+					finished=true;
+					setQueryType(topSymbol);
+					// Check whether $ (end of input token) is poss next
+					// for everything on stack
+					var allNillable=true;
+					for(var sp=state.stack.length;sp>0;--sp) {
+						var item=ll1_table[state.stack[sp-1]];
+						if (!item || !item["$"])
+							allNillable=false;
+					}
+					state.complete= allNillable;
+					if (state.storeProperty && token.cat!="sp-punc") {
+							state.lastProperty= tokenOb.text;
+							state.storeProperty= false;
+						}
+				} else {
+					state.OK=false;
+					state.complete=false;
+					recordFailurePos();
+				}
+			} else {
+				// topSymbol is nonterminal
+				// - see if there is an entry for topSymbol
+				// and nextToken in table
+				var nextSymbols= ll1_table[topSymbol][token];
+				if (nextSymbols!=undefined
+						&& checkSideConditions(topSymbol)
+					 )
+				{
+					// Match - copy RHS of rule to stack
+					for (var i=nextSymbols.length-1; i>=0; --i)
+						state.stack.push(nextSymbols[i]);
+					// Peform any non-grammatical side-effects
+					setSideConditions(topSymbol);
+				} else {
+					// No match in table - fail
+					state.OK=false;
+					state.complete=false;
+					recordFailurePos();
+					state.stack.push(topSymbol);  // Shove topSymbol back on stack
+				}
+			}
+		}
+		if (!finished && state.OK) { 
+			state.OK=false; state.complete=false; recordFailurePos(); 
+    }
+
+		state.possibleCurrent= state.possibleNext;
+		state.possibleNext= getPossibles(state.stack[state.stack.length-1]);
+
+		// alert(token+"="+tokenOb.style+'\n'+state.stack);
+		return tokenOb.style;
+	}
+
+	var indentTop={
+		"*[,, object]": 3,
+		"*[ (,), object]": 3,
+		"*[ (,), objectPath]": 3,
+		"*[/, pathEltOrInverse]": 2,
+		"object": 2,
+		"objectPath": 2,
+		"objectList": 2,
+		"objectListPath": 2,
+		"storeProperty": 2,
+		"pathMod": 2,
+		"?pathMod": 2,
+		"propertyListNotEmpty": 1,
+		"propertyList": 1,
+		"propertyListPath": 1,
+		"propertyListPathNotEmpty": 1,
+		"?[verb, objectList]": 1,
+		"?[or([verbPath, verbSimple]), objectList]": 1
+	};
+
+	var indentTable={
+		"}":1,
+		"]":0,
+		")":1,
+		"{":-1,
+		"(":-1
+	};
+
+	function indent(state, textAfter) {
+		var n = 0; // indent level
+		var i=state.stack.length-1;
+
+		if (/^[\}\]\)]/.test(textAfter)) {
+			// Skip stack items until after matching bracket
+			var closeBracket=textAfter.substr(0,1);
+			for( ;i>=0;--i)
+			{
+				if (state.stack[i]==closeBracket)
+				{--i; break};
+			}
+		} else {
+			// Consider nullable non-terminals if at top of stack
+			var dn=indentTop[state.stack[i]];
+			if (dn) { n+=dn; --i}
+		}
+		for( ;i>=0;--i)
+		{
+			var dn=indentTable[state.stack[i]];
+			if (dn) n+=dn;
+		}
+		return n * config.indentUnit;
+	};
+
+	return {
+		token: tokenBase,
+		startState: function(base) {
+			return {
+				tokenize: tokenBase,
+				OK: true,
+				complete: acceptEmpty,
+				errorStartPos: null,
+				errorEndPos: null,
+				queryType: defaultQueryType,
+				possibleCurrent: getPossibles(startSymbol),
+				possibleNext: getPossibles(startSymbol),
+				allowVars : true,
+				allowBnodes : true,
+				storeProperty : false,
+				lastProperty : "",
+				stack: [startSymbol] }; },
+		indent: indent,
+		electricChars: "}])"
+	};
+});
+CodeMirror.defineMIME("application/x-sparql-query", "sparql");

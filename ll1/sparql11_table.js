@@ -202,6 +202,21 @@ var ll1_table=
      "DOUBLE_NEGATIVE": ["dataBlockValue","*dataBlockValue"], 
      "}": [], 
      ")": []}, 
+  "*datasetClause" : {
+     "FROM": ["datasetClause","*datasetClause"], 
+     "WHERE": [], 
+     "{": []}, 
+  "*describeDatasetClause" : {
+     "FROM": ["describeDatasetClause","*describeDatasetClause"], 
+     "ORDER": [], 
+     "HAVING": [], 
+     "GROUP": [], 
+     "LIMIT": [], 
+     "OFFSET": [], 
+     "WHERE": [], 
+     "{": [], 
+     "VALUES": [], 
+     "$": []}, 
   "*graphNode" : {
      "(": ["graphNode","*graphNode"], 
      "[": ["graphNode","*graphNode"], 
@@ -322,6 +337,7 @@ var ll1_table=
      "OFFSET": [], 
      "ORDER": [], 
      "HAVING": [], 
+     "$": [], 
      "}": []}, 
   "*havingCondition" : {
      "(": ["havingCondition","*havingCondition"], 
@@ -386,6 +402,7 @@ var ll1_table=
      "LIMIT": [], 
      "OFFSET": [], 
      "ORDER": [], 
+     "$": [], 
      "}": []}, 
   "*or([[ (,*dataBlockValue,)],NIL])" : {
      "(": ["or([[ (,*dataBlockValue,)],NIL])","*or([[ (,*dataBlockValue,)],NIL])"], 
@@ -444,7 +461,8 @@ var ll1_table=
      "VAR1": ["or([var,[ (,expression,AS,var,)]])","*or([var,[ (,expression,AS,var,)]])"], 
      "VAR2": ["or([var,[ (,expression,AS,var,)]])","*or([var,[ (,expression,AS,var,)]])"], 
      "WHERE": [], 
-     "{": []}, 
+     "{": [], 
+     "FROM": []}, 
   "*orderCondition" : {
      "ASC": ["orderCondition","*orderCondition"], 
      "DESC": ["orderCondition","*orderCondition"], 
@@ -511,12 +529,17 @@ var ll1_table=
      "VALUES": [], 
      "LIMIT": [], 
      "OFFSET": [], 
+     "$": [], 
      "}": []}, 
   "*prefixDecl" : {
      "PREFIX": ["prefixDecl","*prefixDecl"], 
      "$": [], 
+     "CONSTRUCT": [], 
+     "DESCRIBE": [], 
+     "ASK": [], 
      "INSERT": [], 
      "DELETE": [], 
+     "SELECT": [], 
      "LOAD": [], 
      "CLEAR": [], 
      "DROP": [], 
@@ -532,6 +555,22 @@ var ll1_table=
      "VAR1": ["var","*var"], 
      "VAR2": ["var","*var"], 
      ")": []}, 
+  "*varOrIRIref" : {
+     "VAR1": ["varOrIRIref","*varOrIRIref"], 
+     "VAR2": ["varOrIRIref","*varOrIRIref"], 
+     "IRI_REF": ["varOrIRIref","*varOrIRIref"], 
+     "PNAME_LN": ["varOrIRIref","*varOrIRIref"], 
+     "PNAME_NS": ["varOrIRIref","*varOrIRIref"], 
+     "ORDER": [], 
+     "HAVING": [], 
+     "GROUP": [], 
+     "LIMIT": [], 
+     "OFFSET": [], 
+     "WHERE": [], 
+     "{": [], 
+     "FROM": [], 
+     "VALUES": [], 
+     "$": []}, 
   "+graphNode" : {
      "(": ["graphNode","*graphNode"], 
      "[": ["graphNode","*graphNode"], 
@@ -771,6 +810,12 @@ var ll1_table=
      "IRI_REF": ["orderCondition","*orderCondition"], 
      "PNAME_LN": ["orderCondition","*orderCondition"], 
      "PNAME_NS": ["orderCondition","*orderCondition"]}, 
+  "+varOrIRIref" : {
+     "VAR1": ["varOrIRIref","*varOrIRIref"], 
+     "VAR2": ["varOrIRIref","*varOrIRIref"], 
+     "IRI_REF": ["varOrIRIref","*varOrIRIref"], 
+     "PNAME_LN": ["varOrIRIref","*varOrIRIref"], 
+     "PNAME_NS": ["varOrIRIref","*varOrIRIref"]}, 
   "?." : {
      ".": ["."], 
      "VAR1": [], 
@@ -934,6 +979,9 @@ var ll1_table=
   "?[,,expression]" : {
      ",": ["[,,expression]"], 
      ")": []}, 
+  "?[.,?constructTriples]" : {
+     ".": ["[.,?constructTriples]"], 
+     "}": []}, 
   "?[.,?triplesBlock]" : {
      ".": ["[.,?triplesBlock]"], 
      "{": [], 
@@ -1051,10 +1099,13 @@ var ll1_table=
      ";": []}, 
   "?baseDecl" : {
      "BASE": ["baseDecl"], 
-     "PREFIX": [], 
      "$": [], 
+     "CONSTRUCT": [], 
+     "DESCRIBE": [], 
+     "ASK": [], 
      "INSERT": [], 
      "DELETE": [], 
+     "SELECT": [], 
      "LOAD": [], 
      "CLEAR": [], 
      "DROP": [], 
@@ -1062,7 +1113,35 @@ var ll1_table=
      "MOVE": [], 
      "COPY": [], 
      "CREATE": [], 
-     "WITH": []}, 
+     "WITH": [], 
+     "PREFIX": []}, 
+  "?constructTriples" : {
+     "VAR1": ["constructTriples"], 
+     "VAR2": ["constructTriples"], 
+     "NIL": ["constructTriples"], 
+     "(": ["constructTriples"], 
+     "[": ["constructTriples"], 
+     "IRI_REF": ["constructTriples"], 
+     "TRUE": ["constructTriples"], 
+     "FALSE": ["constructTriples"], 
+     "BLANK_NODE_LABEL": ["constructTriples"], 
+     "ANON": ["constructTriples"], 
+     "PNAME_LN": ["constructTriples"], 
+     "PNAME_NS": ["constructTriples"], 
+     "STRING_LITERAL1": ["constructTriples"], 
+     "STRING_LITERAL2": ["constructTriples"], 
+     "STRING_LITERAL_LONG1": ["constructTriples"], 
+     "STRING_LITERAL_LONG2": ["constructTriples"], 
+     "INTEGER": ["constructTriples"], 
+     "DECIMAL": ["constructTriples"], 
+     "DOUBLE": ["constructTriples"], 
+     "INTEGER_POSITIVE": ["constructTriples"], 
+     "DECIMAL_POSITIVE": ["constructTriples"], 
+     "DOUBLE_POSITIVE": ["constructTriples"], 
+     "INTEGER_NEGATIVE": ["constructTriples"], 
+     "DECIMAL_NEGATIVE": ["constructTriples"], 
+     "DOUBLE_NEGATIVE": ["constructTriples"], 
+     "}": []}, 
   "?groupClause" : {
      "GROUP": ["groupClause"], 
      "VALUES": [], 
@@ -1070,6 +1149,7 @@ var ll1_table=
      "OFFSET": [], 
      "ORDER": [], 
      "HAVING": [], 
+     "$": [], 
      "}": []}, 
   "?havingClause" : {
      "HAVING": ["havingClause"], 
@@ -1077,6 +1157,7 @@ var ll1_table=
      "LIMIT": [], 
      "OFFSET": [], 
      "ORDER": [], 
+     "$": [], 
      "}": []}, 
   "?insertClause" : {
      "INSERT": ["insertClause"], 
@@ -1085,15 +1166,18 @@ var ll1_table=
   "?limitClause" : {
      "LIMIT": ["limitClause"], 
      "VALUES": [], 
+     "$": [], 
      "}": []}, 
   "?limitOffsetClauses" : {
      "LIMIT": ["limitOffsetClauses"], 
      "OFFSET": ["limitOffsetClauses"], 
      "VALUES": [], 
+     "$": [], 
      "}": []}, 
   "?offsetClause" : {
      "OFFSET": ["offsetClause"], 
      "VALUES": [], 
+     "$": [], 
      "}": []}, 
   "?or([DISTINCT,REDUCED])" : {
      "DISTINCT": ["or([DISTINCT,REDUCED])"], 
@@ -1208,6 +1292,7 @@ var ll1_table=
      "VALUES": [], 
      "LIMIT": [], 
      "OFFSET": [], 
+     "$": [], 
      "}": []}, 
   "?pathMod" : {
      "*": ["pathMod"], 
@@ -1305,6 +1390,16 @@ var ll1_table=
      "DOUBLE_NEGATIVE": ["triplesTemplate"], 
      "}": [], 
      "GRAPH": []}, 
+  "?whereClause" : {
+     "WHERE": ["whereClause"], 
+     "{": ["whereClause"], 
+     "ORDER": [], 
+     "HAVING": [], 
+     "GROUP": [], 
+     "LIMIT": [], 
+     "OFFSET": [], 
+     "VALUES": [], 
+     "$": []}, 
   "[ (,*dataBlockValue,)]" : {
      "(": ["(","*dataBlockValue",")"]}, 
   "[ (,*var,)]" : {
@@ -1319,6 +1414,9 @@ var ll1_table=
      "&&": ["&&","valueLogical"]}, 
   "[*,unaryExpression]" : {
      "*": ["*","unaryExpression"]}, 
+  "[*datasetClause,WHERE,{,?triplesTemplate,},solutionModifier]" : {
+     "WHERE": ["*datasetClause","WHERE","{","?triplesTemplate","}","solutionModifier"], 
+     "FROM": ["*datasetClause","WHERE","{","?triplesTemplate","}","solutionModifier"]}, 
   "[+,multiplicativeExpression]" : {
      "+": ["+","multiplicativeExpression"]}, 
   "[,,expression]" : {
@@ -1333,6 +1431,8 @@ var ll1_table=
      ",": [",","or([},[integer,}]])"]}, 
   "[-,multiplicativeExpression]" : {
      "-": ["-","multiplicativeExpression"]}, 
+  "[.,?constructTriples]" : {
+     ".": [".","?constructTriples"]}, 
   "[.,?triplesBlock]" : {
      ".": [".","?triplesBlock"]}, 
   "[.,?triplesTemplate]" : {
@@ -1373,6 +1473,8 @@ var ll1_table=
      "UNION": ["UNION","groupGraphPattern"]}, 
   "[^^,iriRef]" : {
      "^^": ["^^","iriRef"]}, 
+  "[constructTemplate,*datasetClause,whereClause,solutionModifier]" : {
+     "{": ["constructTemplate","*datasetClause","whereClause","solutionModifier"]}, 
   "[deleteClause,?insertClause]" : {
      "DELETE": ["deleteClause","?insertClause"]}, 
   "[graphPatternNotTriples,?.,?triplesBlock]" : {
@@ -1540,6 +1642,8 @@ var ll1_table=
   "argList" : {
      "NIL": ["NIL"], 
      "(": ["(","?DISTINCT","expression","*[,,expression]",")"]}, 
+  "askQuery" : {
+     "ASK": ["ASK","*datasetClause","whereClause","solutionModifier"]}, 
   "baseDecl" : {
      "BASE": ["BASE","IRI_REF"]}, 
   "bind" : {
@@ -1848,6 +1952,36 @@ var ll1_table=
      "IRI_REF": ["functionCall"], 
      "PNAME_LN": ["functionCall"], 
      "PNAME_NS": ["functionCall"]}, 
+  "constructQuery" : {
+     "CONSTRUCT": ["CONSTRUCT","or([[constructTemplate,*datasetClause,whereClause,solutionModifier],[*datasetClause,WHERE,{,?triplesTemplate,},solutionModifier]])"]}, 
+  "constructTemplate" : {
+     "{": ["{","?constructTriples","}"]}, 
+  "constructTriples" : {
+     "VAR1": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "VAR2": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "NIL": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "(": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "[": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "IRI_REF": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "TRUE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "FALSE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "BLANK_NODE_LABEL": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "ANON": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "PNAME_LN": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "PNAME_NS": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "STRING_LITERAL1": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "STRING_LITERAL2": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "STRING_LITERAL_LONG1": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "STRING_LITERAL_LONG2": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "INTEGER": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DECIMAL": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DOUBLE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "INTEGER_POSITIVE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DECIMAL_POSITIVE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DOUBLE_POSITIVE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "INTEGER_NEGATIVE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DECIMAL_NEGATIVE": ["triplesSameSubject","?[.,?constructTriples]"], 
+     "DOUBLE_NEGATIVE": ["triplesSameSubject","?[.,?constructTriples]"]}, 
   "copy" : {
      "COPY": ["COPY","?SILENT_4","graphOrDefault","TO","graphOrDefault"]}, 
   "create" : {
@@ -1877,12 +2011,22 @@ var ll1_table=
      "TRUE": ["booleanLiteral"], 
      "FALSE": ["booleanLiteral"], 
      "UNDEF": ["UNDEF"]}, 
+  "datasetClause" : {
+     "FROM": ["FROM","or([defaultGraphClause,namedGraphClause])"]}, 
+  "defaultGraphClause" : {
+     "IRI_REF": ["sourceSelector"], 
+     "PNAME_LN": ["sourceSelector"], 
+     "PNAME_NS": ["sourceSelector"]}, 
   "delete1" : {
      "DATA": ["DATA","quadDataNoBnodes"], 
      "WHERE": ["WHERE","quadPatternNoBnodes"], 
      "{": ["quadPatternNoBnodes","?insertClause","*usingClause","WHERE","groupGraphPattern"]}, 
   "deleteClause" : {
      "DELETE": ["DELETE","quadPattern"]}, 
+  "describeDatasetClause" : {
+     "FROM": ["FROM","or([defaultGraphClause,namedGraphClause])"]}, 
+  "describeQuery" : {
+     "DESCRIBE": ["DESCRIBE","or([+varOrIRIref,*])","*describeDatasetClause","?whereClause","solutionModifier"]}, 
   "disallowBnodes" : {
      "}": [], 
      "GRAPH": [], 
@@ -2421,6 +2565,8 @@ var ll1_table=
      "DOUBLE_NEGATIVE": ["unaryExpression","*or([[*,unaryExpression],[/,unaryExpression]])"], 
      "PNAME_LN": ["unaryExpression","*or([[*,unaryExpression],[/,unaryExpression]])"], 
      "PNAME_NS": ["unaryExpression","*or([[*,unaryExpression],[/,unaryExpression]])"]}, 
+  "namedGraphClause" : {
+     "NAMED": ["NAMED","sourceSelector"]}, 
   "notExistsFunc" : {
      "NOT": ["NOT","EXISTS","groupGraphPattern"]}, 
   "numericExpression" : {
@@ -2731,6 +2877,13 @@ var ll1_table=
      "VAR1": ["+or([var,[ (,expression,AS,var,)]])"], 
      "VAR2": ["+or([var,[ (,expression,AS,var,)]])"], 
      "*": ["*"]}, 
+  "or([+varOrIRIref,*])" : {
+     "VAR1": ["+varOrIRIref"], 
+     "VAR2": ["+varOrIRIref"], 
+     "IRI_REF": ["+varOrIRIref"], 
+     "PNAME_LN": ["+varOrIRIref"], 
+     "PNAME_NS": ["+varOrIRIref"], 
+     "*": ["*"]}, 
   "or([ASC,DESC])" : {
      "ASC": ["ASC"], 
      "DESC": ["DESC"]}, 
@@ -2773,12 +2926,21 @@ var ll1_table=
      ">=": ["[>=,numericExpression]"], 
      "IN": ["[IN,expressionList]"], 
      "NOT": ["[NOT,IN,expressionList]"]}, 
+  "or([[constructTemplate,*datasetClause,whereClause,solutionModifier],[*datasetClause,WHERE,{,?triplesTemplate,},solutionModifier]])" : {
+     "{": ["[constructTemplate,*datasetClause,whereClause,solutionModifier]"], 
+     "WHERE": ["[*datasetClause,WHERE,{,?triplesTemplate,},solutionModifier]"], 
+     "FROM": ["[*datasetClause,WHERE,{,?triplesTemplate,},solutionModifier]"]}, 
   "or([[deleteClause,?insertClause],insertClause])" : {
      "DELETE": ["[deleteClause,?insertClause]"], 
      "INSERT": ["insertClause"]}, 
   "or([[integer,or([[,,or([},[integer,}]])],}])],[,,integer,}]])" : {
      "INTEGER": ["[integer,or([[,,or([},[integer,}]])],}])]"], 
      ",": ["[,,integer,}]"]}, 
+  "or([defaultGraphClause,namedGraphClause])" : {
+     "IRI_REF": ["defaultGraphClause"], 
+     "PNAME_LN": ["defaultGraphClause"], 
+     "PNAME_NS": ["defaultGraphClause"], 
+     "NAMED": ["namedGraphClause"]}, 
   "or([inlineDataOneVar,inlineDataFull])" : {
      "VAR1": ["inlineDataOneVar"], 
      "VAR2": ["inlineDataOneVar"], 
@@ -2801,6 +2963,27 @@ var ll1_table=
      "INTEGER_NEGATIVE": ["numericLiteralNegative"], 
      "DECIMAL_NEGATIVE": ["numericLiteralNegative"], 
      "DOUBLE_NEGATIVE": ["numericLiteralNegative"]}, 
+  "or([queryAll,updateAll])" : {
+     "CONSTRUCT": ["queryAll"], 
+     "DESCRIBE": ["queryAll"], 
+     "ASK": ["queryAll"], 
+     "SELECT": ["queryAll"], 
+     "INSERT": ["updateAll"], 
+     "DELETE": ["updateAll"], 
+     "LOAD": ["updateAll"], 
+     "CLEAR": ["updateAll"], 
+     "DROP": ["updateAll"], 
+     "ADD": ["updateAll"], 
+     "MOVE": ["updateAll"], 
+     "COPY": ["updateAll"], 
+     "CREATE": ["updateAll"], 
+     "WITH": ["updateAll"], 
+     "$": ["updateAll"]}, 
+  "or([selectQuery,constructQuery,describeQuery,askQuery])" : {
+     "SELECT": ["selectQuery"], 
+     "CONSTRUCT": ["constructQuery"], 
+     "DESCRIBE": ["describeQuery"], 
+     "ASK": ["askQuery"]}, 
   "or([subSelect,groupGraphPatternSub])" : {
      "SELECT": ["subSelect"], 
      "{": ["groupGraphPatternSub"], 
@@ -3075,8 +3258,12 @@ var ll1_table=
      "PREFIX": ["?baseDecl","*prefixDecl"], 
      "BASE": ["?baseDecl","*prefixDecl"], 
      "$": ["?baseDecl","*prefixDecl"], 
+     "CONSTRUCT": ["?baseDecl","*prefixDecl"], 
+     "DESCRIBE": ["?baseDecl","*prefixDecl"], 
+     "ASK": ["?baseDecl","*prefixDecl"], 
      "INSERT": ["?baseDecl","*prefixDecl"], 
      "DELETE": ["?baseDecl","*prefixDecl"], 
+     "SELECT": ["?baseDecl","*prefixDecl"], 
      "LOAD": ["?baseDecl","*prefixDecl"], 
      "CLEAR": ["?baseDecl","*prefixDecl"], 
      "DROP": ["?baseDecl","*prefixDecl"], 
@@ -3167,6 +3354,11 @@ var ll1_table=
      "}": ["?triplesTemplate","*[quadsNotTriples,?.,?triplesTemplate]"]}, 
   "quadsNotTriples" : {
      "GRAPH": ["GRAPH","varOrIRIref","{","?triplesTemplate","}"]}, 
+  "queryAll" : {
+     "CONSTRUCT": ["or([selectQuery,constructQuery,describeQuery,askQuery])","valuesClause"], 
+     "DESCRIBE": ["or([selectQuery,constructQuery,describeQuery,askQuery])","valuesClause"], 
+     "ASK": ["or([selectQuery,constructQuery,describeQuery,askQuery])","valuesClause"], 
+     "SELECT": ["or([selectQuery,constructQuery,describeQuery,askQuery])","valuesClause"]}, 
   "rdfLiteral" : {
      "STRING_LITERAL1": ["string","?or([LANGTAG,[^^,iriRef]])"], 
      "STRING_LITERAL2": ["string","?or([LANGTAG,[^^,iriRef]])"], 
@@ -3262,6 +3454,8 @@ var ll1_table=
      "PNAME_NS": ["numericExpression","?or([[=,numericExpression],[!=,numericExpression],[<,numericExpression],[>,numericExpression],[<=,numericExpression],[>=,numericExpression],[IN,expressionList],[NOT,IN,expressionList]])"]}, 
   "selectClause" : {
      "SELECT": ["SELECT","?or([DISTINCT,REDUCED])","or([+or([var,[ (,expression,AS,var,)]]),*])"]}, 
+  "selectQuery" : {
+     "SELECT": ["selectClause","*datasetClause","whereClause","solutionModifier"]}, 
   "serviceGraphPattern" : {
      "SERVICE": ["SERVICE","?SILENT","varOrIRIref","groupGraphPattern"]}, 
   "solutionModifier" : {
@@ -3271,7 +3465,30 @@ var ll1_table=
      "HAVING": ["?groupClause","?havingClause","?orderClause","?limitOffsetClauses"], 
      "GROUP": ["?groupClause","?havingClause","?orderClause","?limitOffsetClauses"], 
      "VALUES": ["?groupClause","?havingClause","?orderClause","?limitOffsetClauses"], 
+     "$": ["?groupClause","?havingClause","?orderClause","?limitOffsetClauses"], 
      "}": ["?groupClause","?havingClause","?orderClause","?limitOffsetClauses"]}, 
+  "sourceSelector" : {
+     "IRI_REF": ["iriRef"], 
+     "PNAME_LN": ["iriRef"], 
+     "PNAME_NS": ["iriRef"]}, 
+  "sparql11" : {
+     "$": ["prologue","or([queryAll,updateAll])","$"], 
+     "CONSTRUCT": ["prologue","or([queryAll,updateAll])","$"], 
+     "DESCRIBE": ["prologue","or([queryAll,updateAll])","$"], 
+     "ASK": ["prologue","or([queryAll,updateAll])","$"], 
+     "INSERT": ["prologue","or([queryAll,updateAll])","$"], 
+     "DELETE": ["prologue","or([queryAll,updateAll])","$"], 
+     "SELECT": ["prologue","or([queryAll,updateAll])","$"], 
+     "LOAD": ["prologue","or([queryAll,updateAll])","$"], 
+     "CLEAR": ["prologue","or([queryAll,updateAll])","$"], 
+     "DROP": ["prologue","or([queryAll,updateAll])","$"], 
+     "ADD": ["prologue","or([queryAll,updateAll])","$"], 
+     "MOVE": ["prologue","or([queryAll,updateAll])","$"], 
+     "COPY": ["prologue","or([queryAll,updateAll])","$"], 
+     "CREATE": ["prologue","or([queryAll,updateAll])","$"], 
+     "WITH": ["prologue","or([queryAll,updateAll])","$"], 
+     "PREFIX": ["prologue","or([queryAll,updateAll])","$"], 
+     "BASE": ["prologue","or([queryAll,updateAll])","$"]}, 
   "storeProperty" : {
      "VAR1": [], 
      "VAR2": [], 
@@ -3511,20 +3728,18 @@ var ll1_table=
      "INSERT": ["INSERT","insert1"], 
      "DELETE": ["DELETE","delete1"], 
      "WITH": ["modify"]}, 
-  "updateUnit" : {
-     "$": ["update","$"], 
-     "INSERT": ["update","$"], 
-     "DELETE": ["update","$"], 
-     "PREFIX": ["update","$"], 
-     "BASE": ["update","$"], 
-     "LOAD": ["update","$"], 
-     "CLEAR": ["update","$"], 
-     "DROP": ["update","$"], 
-     "ADD": ["update","$"], 
-     "MOVE": ["update","$"], 
-     "COPY": ["update","$"], 
-     "CREATE": ["update","$"], 
-     "WITH": ["update","$"]}, 
+  "updateAll" : {
+     "INSERT": ["?[update1,?[;,update]]"], 
+     "DELETE": ["?[update1,?[;,update]]"], 
+     "LOAD": ["?[update1,?[;,update]]"], 
+     "CLEAR": ["?[update1,?[;,update]]"], 
+     "DROP": ["?[update1,?[;,update]]"], 
+     "ADD": ["?[update1,?[;,update]]"], 
+     "MOVE": ["?[update1,?[;,update]]"], 
+     "COPY": ["?[update1,?[;,update]]"], 
+     "CREATE": ["?[update1,?[;,update]]"], 
+     "WITH": ["?[update1,?[;,update]]"], 
+     "$": ["?[update1,?[;,update]]"]}, 
   "usingClause" : {
      "USING": ["USING","or([iriRef,[NAMED,iriRef]])"]}, 
   "valueLogical" : {
@@ -3615,6 +3830,7 @@ var ll1_table=
      "PNAME_NS": ["relationalExpression"]}, 
   "valuesClause" : {
      "VALUES": ["VALUES","dataBlock"], 
+     "$": [], 
      "}": []}, 
   "var" : {
      "VAR1": ["VAR1"], 
@@ -3676,7 +3892,7 @@ var keywords=/^(GROUP_CONCAT|DATATYPE|BASE|PREFIX|SELECT|CONSTRUCT|DESCRIBE|ASK|
 
 var punct=/^(\*|a|\.|\{|\}|,|\(|\)|;|\[|\]|\|\||&&|=|!=|!|<=|>=|<|>|\+|-|\/|\^\^|\?|\||\^)/ ;
 
-var defaultQueryType="update";
+var defaultQueryType=null;
 var lexVersion="sparql11";
-var startSymbol="update";
+var startSymbol="sparql11";
 var acceptEmpty=true;
