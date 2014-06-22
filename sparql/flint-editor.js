@@ -1362,6 +1362,16 @@ function FlintEditor(container, imagesPath, config) {
 			}
 		}
 
+		function stringifyResource(resourceURI) {
+			for (var i = 0; i < config.namespaces.length; i++) {
+				var ns = config.namespaces[i];
+				if (resourceURI.indexOf(ns.uri) === 0) {
+					return ns.prefix + ":" + resourceURI.substr(ns.uri.length);
+				}
+			}
+			return "&lt;" + resourceURI + "&gt;";
+		}
+
 		function displayProperties() {
 			$('#flint-sidebar-content').text("");
 			if (activeDataItem) {
@@ -1371,13 +1381,13 @@ function FlintEditor(container, imagesPath, config) {
 						var i;
 						for (i = 0; i < activeDataItem.properties.results.bindings.length; i++) {
 							listText += "<li class='flint-property'>"
-									+ activeDataItem.properties.results.bindings[i].p.value
+									+ stringifyResource(activeDataItem.properties.results.bindings[i].p.value)
 									+ "</li>";
 						}
 						listText = "<ul>" + listText + "</ul>";
 						$('#flint-sidebar-content').append(listText);
 						$('.flint-property').click(function(e) {
-							editor.insert("<" + $(this).text() + ">");
+							editor.insert($(this).text());
 							e.stopPropagation();
 						});
 					} catch (e) {
@@ -1401,13 +1411,13 @@ function FlintEditor(container, imagesPath, config) {
 						var i;
 						for (i = 0; i < activeDataItem.classes.results.bindings.length; i++) {
 							listText += "<li class='flint-class'>"
-									+ activeDataItem.classes.results.bindings[i].o.value
+									+ stringifyResource(activeDataItem.classes.results.bindings[i].o.value)
 									+ "</li>";
 						}
 						listText = "<ul>" + listText + "</ul>";
 						$('#flint-sidebar-content').append(listText);
 						$('.flint-class').click(function(e) {
-							editor.insert("<" + $(this).text() + ">");
+							editor.insert($(this).text());
 							e.stopPropagation();
 						});
 					} catch (e) {
@@ -2475,85 +2485,96 @@ function FlintEditor(container, imagesPath, config) {
 			editor.windowClosing = true;
 		});
 
+		var fromGroupsToListOfPairs = function(groups) {
+			var result = [];
+			for (var groupKey in groups) {
+				var items = groups[groupKey];
+				for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
+					result.push([items[itemIndex],groupKey]);
+				}
+			}
+			return result;
+		}
+		
 		// Keywords can be grouped using a string for the second array item
-		this.sparql1Keywords = [ [ "BASE", "" ], [ "PREFIX", "" ],
-				[ "SELECT", "" ], [ "ASK", "" ], [ "CONSTRUCT", "" ],
-				[ "DESCRIBE", "" ], [ "DISTINCT", "MODIFIER" ], [ "REDUCED", "" ],
-				[ "FROM", "" ], [ "NAMED", "" ], [ "WHERE", "" ], [ "GRAPH", "" ],
-				[ "UNION", "" ], [ "FILTER", "" ], [ "OPTIONAL", "" ],
-				[ "ORDER", "MODIFIER" ], [ "LIMIT", "MODIFIER" ],
-				[ "OFFSET", "MODIFIER" ], [ "BY", "MODIFIER" ], [ "ASC", "" ],
-				[ "DESC", "" ], [ "STR", "STRING" ], [ "LANG", "" ],
-				[ "LANGMATCHES", "STRING" ], [ "DATATYPE", "" ], [ "BOUND", "" ],
-				[ "SAMETERM", "" ], [ "ISIRI", "TERM" ], [ "ISURI", "TERM" ],
-				[ "ISBLANK", "TERM" ], [ "ISLITERAL", "TERM" ], [ "REGEX", "STRING" ] ];
+		this.sparql1Keywords = fromGroupsToListOfPairs({
+			"CLAUSES": [
+				"BASE", "PREFIX",
+                                "SELECT", "ASK", "CONSTRUCT", "DESCRIBE",
+                                "REDUCED", "FROM", "NAMED", "WHERE",
+                                "GRAPH", "UNION", "FILTER", "OPTIONAL",
+				"ASC", "DESC" ],
+			"ON-TERMS": [
+				"LANG", "DATATYPE", "BOUND",
+				"ISIRI", "ISURI", "ISBLANK", "ISLITERAL" ],
+			"ON-STRINGS": [
+				"STR", "LANGMATCHES", "REGEX" ]
+		});
 
-		this.sparql11Query = [ [ "BASE", "" ], [ "PREFIX", "" ], [ "SELECT", "" ],
-				[ "ASK", "" ], [ "CONSTRUCT", "" ], [ "DESCRIBE", "" ],
-				[ "DISTINCT", "MODIFIER" ], [ "REDUCED", "" ], [ "FROM", "" ],
-				[ "NAMED", "" ], [ "WHERE", "" ], [ "GRAPH", "" ], [ "UNION", "" ],
-				[ "FILTER", "" ], [ "OPTIONAL", "" ], [ "ORDER", "MODIFIER" ],
-				[ "LIMIT", "MODIFIER" ], [ "OFFSET", "MODIFIER" ],
-				[ "BY", "MODIFIER" ], [ "ASC", "" ], [ "DESC", "" ],
-				[ "STR", "STRING" ], [ "LANG", "" ], [ "LANGMATCHES", "STRING" ],
-				[ "DATATYPE", "" ], [ "BOUND", "" ], [ "SAMETERM", "" ],
-				[ "ISIRI", "TERM" ], [ "ISURI", "TERM" ], [ "ISBLANK", "TERM" ],
-				[ "ISLITERAL", "TERM" ], [ "REGEX", "STRING" ], [ "HAVING", "" ],
-				[ "GROUP", "" ], [ "VALUES", "" ], [ "IF", "" ], [ "COALESCE", "" ],
-				[ "EXISTS", "" ], [ "NOT", "" ], [ "ISNUMERIC", "TERM" ],
-				[ "IRI", "TERM" ], [ "BNODE", "TERM" ], [ "STRDT", "TERM" ],
-				[ "STRLANG", "TERM" ], [ "UUID", "TERM" ], [ "STRUUID", "TERM" ],
-				[ "STRLEN", "STRING" ], [ "SUBSTR", "STRING" ], [ "LCASE", "STRING" ],
-				[ "UCASE", "STRING" ], [ "STRSTARTS", "STRING" ],
-				[ "STRENDS", "STRING" ], [ "CONTAINS", "STRING" ],
-				[ "STRBEFORE", "STRING" ], [ "STRAFTER", "STRING" ],
-				[ "ENCODE_FOR_URI", "STRING" ], [ "CONCAT", "STRING" ],
-				[ "REPLACE", "STRING" ], [ "NOW", "DATE" ], [ "YEAR", "DATE" ],
-				[ "MONTH", "DATE" ], [ "DAY", "DATE" ], [ "HOURS", "DATE" ],
-				[ "MINUTES", "DATE" ], [ "SECONDS", "DATE" ], [ "TIMEZONE", "DATE" ],
-				[ "TZ", "DATE" ], [ "MD5", "HASH" ], [ "SHA1", "HASH" ],
-				[ "SHA256", "HASH" ], [ "SHA384", "HASH" ], [ "SHA512", "HASH" ],
-				[ "ABS", "NUMERIC" ], [ "ROUND", "NUMERIC" ], [ "CEIL", "NUMERIC" ],
-				[ "FLOOR", "NUMERIC" ], [ "RAND", "NUMERIC" ],
-				[ "REDUCED", "MODIFIER" ], [ "COUNT", "AGGREGATE" ],
-				[ "SUM", "AGGREGATE" ], [ "MIN", "AGGREGATE" ], [ "MAX", "AGGREGATE" ],
-				[ "AVG", "AGGREGATE" ], [ "SAMPLE", "AGGREGATE" ],
-				[ "GROUP_CONCAT", "AGGREGATE" ] ];
+		this.sparql11Query = fromGroupsToListOfPairs({
+			"CLAUSES": [
+				"BASE", "PREFIX",
+                "SELECT", "ASK", "CONSTRUCT", "DESCRIBE",
+                "REDUCED", "FROM", "NAMED", "WHERE",
+                "GRAPH", "UNION", "FILTER", "OPTIONAL", "MINUS", "SERVICE",
+				"HAVING", "GROUP",
+				"BIND", "AS", "VALUES" ],
+			"MODIFIER": [ "ORDER", "ASC", "DESC", "LIMIT", "OFFSET", "BY", "DISTINCT", "REDUCED" ],
+			"FUNCTIONAL": [ "BOUND", "SAMETERM", "IF", "COALESCE", "EXISTS", "NOT" ],
+			"ON-TERMS": [
+				"LANG", "DATATYPE",
+				"ISIRI", "ISURI", "ISBLANK", "ISLITERAL",
+				"ISNUMERIC", 
+				"STR", "IRI",  "BNODE",
+				"STRDT",
+				"STRLANG", "UUID", "STRUUID" ],
+			"ON-STRINGS": [
+				"LANGMATCHES", "REGEX",
+				"STRLEN", "SUBSTR", "LCASE", "UCASE", "STRSTARTS", "STRENDS", "CONTAINS", "STRBEFORE", "STRAFTER", 
+				"ENCODE_FOR_URI", "CONCAT", "REPLACE" ],
+			"ON-DATETIMES": [
+				"NOW", "YEAR", "MONTH", "DAY", "HOURS", "MINUTES", "SECONDS", "TIMEZONE", "TZ" ],
+			"HASH": [ "MD5", "SHA1", "SHA256", "SHA384", "SHA512" ],
+			"ON-NUMERICS": [
+				"ABS", "ROUND", "CEIL", "FLOOR", "RAND" ],
+			"AGGREGATES": [ "COUNT", "SUM", "MIN", "MAX", "AVG", "SAMPLE", "GROUP_CONCAT", "SEPARATOR" ],
+			"CONSTANTS" : [ "TRUE", "FALSE", "UNDEF" ]
+		});
 
-		this.sparql11Update = [ [ "BASE", "" ], [ "PREFIX", "" ], [ "SELECT", "" ],
-				[ "DISTINCT", "MODIFIER" ], [ "REDUCED", "" ], [ "NAMED", "" ],
-				[ "WHERE", "" ], [ "GRAPH", "" ], [ "TO", "UPDATE" ], [ "USING", "" ],
-				[ "DEFAULT", "" ], [ "ALL", "" ], [ "UNION", "" ], [ "FILTER", "" ],
-				[ "OPTIONAL", "" ], [ "ORDER", "MODIFIER" ], [ "LIMIT", "MODIFIER" ],
-				[ "OFFSET", "MODIFIER" ], [ "BY", "MODIFIER" ], [ "ASC", "" ],
-				[ "DESC", "" ], [ "STR", "STRING" ], [ "LANG", "" ],
-				[ "LANGMATCHES", "STRING" ], [ "DATATYPE", "" ], [ "BOUND", "" ],
-				[ "SAMETERM", "" ], [ "ISIRI", "TERM" ], [ "ISURI", "TERM" ],
-				[ "ISBLANK", "TERM" ], [ "ISLITERAL", "TERM" ], [ "REGEX", "STRING" ],
-				[ "HAVING", "" ], [ "GROUP", "" ], [ "VALUES", "" ], [ "IF", "" ],
-				[ "COALESCE", "" ], [ "EXISTS", "" ], [ "NOT", "" ],
-				[ "ISNUMERIC", "TERM" ], [ "IRI", "TERM" ], [ "BNODE", "TERM" ],
-				[ "STRDT", "TERM" ], [ "STRLANG", "TERM" ], [ "UUID", "TERM" ],
-				[ "STRUUID", "TERM" ], [ "STRLEN", "STRING" ], [ "SUBSTR", "STRING" ],
-				[ "LCASE", "STRING" ], [ "UCASE", "STRING" ],
-				[ "STRSTARTS", "STRING" ], [ "STRENDS", "STRING" ],
-				[ "CONTAINS", "STRING" ], [ "STRBEFORE", "STRING" ],
-				[ "STRAFTER", "STRING" ], [ "ENCODE_FOR_URI", "STRING" ],
-				[ "CONCAT", "STRING" ], [ "REPLACE", "STRING" ], [ "NOW", "DATE" ],
-				[ "YEAR", "DATE" ], [ "MONTH", "DATE" ], [ "DAY", "DATE" ],
-				[ "HOURS", "DATE" ], [ "MINUTES", "DATE" ], [ "SECONDS", "DATE" ],
-				[ "TIMEZONE", "DATE" ], [ "TZ", "DATE" ], [ "MD5", "HASH" ],
-				[ "SHA1", "HASH" ], [ "SHA256", "HASH" ], [ "SHA384", "HASH" ],
-				[ "SHA512", "HASH" ], [ "ABS", "NUMERIC" ], [ "ROUND", "NUMERIC" ],
-				[ "CEIL", "NUMERIC" ], [ "FLOOR", "NUMERIC" ], [ "RAND", "NUMERIC" ],
-				[ "REDUCED", "MODIFIER" ], [ "COUNT", "AGGREGATE" ],
-				[ "SUM", "AGGREGATE" ], [ "MIN", "AGGREGATE" ], [ "MAX", "AGGREGATE" ],
-				[ "AVG", "AGGREGATE" ], [ "SAMPLE", "AGGREGATE" ],
-				[ "GROUP_CONCAT", "AGGREGATE" ], [ "DATA", "UPDATE" ],
-				[ "INSERT", "UPDATE" ], [ "DELETE", "UPDATE" ], [ "CREATE", "UPDATE" ],
-				[ "DROP", "UPDATE" ], [ "COPY", "UPDATE" ], [ "MOVE", "UPDATE" ],
-				[ "ADD", "UPDATE" ], [ "LOAD", "UPDATE" ], [ "INTO", "UPDATE" ],
-				[ "WITH", "UPDATE" ], [ "SILENT", "UPDATE" ] ];
+		this.sparql11Update = fromGroupsToListOfPairs({
+			"CLAUSES": [
+				"BASE", "PREFIX",
+                "SELECT", "ASK", "CONSTRUCT", "DESCRIBE",
+                "REDUCED", "FROM", "NAMED", "WHERE",
+                "GRAPH", "UNION", "FILTER", "OPTIONAL", "MINUS", "SERVICE",
+				"HAVING", "GROUP",
+				"BIND", "AS", "VALUES",
+				"TO", "USING", "DEFAULT", "ALL",
+				"DATA", 
+				"INSERT", "DELETE", "CREATE",
+				"DROP","COPY", "MOVE", "ADD", "LOAD", "INTO", "CLEAR",
+				"WITH", "SILENT" ],
+			"MODIFIER": [ "ORDER", "ASC", "DESC", "LIMIT", "OFFSET", "BY", "DISTINCT", "REDUCED" ],
+			"FUNCTIONAL": [ "BOUND", "SAMETERM", "IF", "COALESCE", "EXISTS", "NOT" ],
+			"ON-TERMS": [
+				"LANG", "DATATYPE",
+				"ISIRI", "ISURI", "ISBLANK", "ISLITERAL",
+				"ISNUMERIC", 
+				"STR", "IRI",  "BNODE",
+				"STRDT",
+				"STRLANG", "UUID", "STRUUID" ],
+			"ON-STRINGS": [
+				"LANGMATCHES", "REGEX",
+				"STRLEN", "SUBSTR", "LCASE", "UCASE", "STRSTARTS", "STRENDS", "CONTAINS", "STRBEFORE", "STRAFTER", 
+				"ENCODE_FOR_URI", "CONCAT", "REPLACE" ],
+			"ON-DATETIMES": [
+				"NOW", "YEAR", "MONTH", "DAY", "HOURS", "MINUTES", "SECONDS", "TIMEZONE", "TZ" ],
+			"HASH": [ "MD5", "SHA1", "SHA256", "SHA384", "SHA512" ],
+			"ON-NUMERICS": [
+				"ABS", "ROUND", "CEIL", "FLOOR", "RAND" ],
+			"AGGREGATES": [ "COUNT", "SUM", "MIN", "MAX", "AVG", "SAMPLE", "GROUP_CONCAT", "SEPARATOR" ],
+			"CONSTANTS" : [ "TRUE", "FALSE", "UNDEF" ]
+		});
 
 		try {
 			// Path to images directory
